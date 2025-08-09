@@ -7,22 +7,23 @@ export default function Search() {
   const [minRepos, setMinRepos] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError(false);
+    setUsers([]);
 
     try {
-      const results = await fetchUserData({
-        username,
-        location,
-        minRepos,
-      });
-      setUsers(results);
-    } catch (err) {
-      setError("Looks like we can't find any users with those criteria.");
+      const results = await fetchUserData({ username, location, minRepos });
+      if (results.length === 0) {
+        setError(true);
+      } else {
+        setUsers(results);
+      }
+    } catch {
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -30,10 +31,7 @@ export default function Search() {
 
   return (
     <div className="max-w-xl mx-auto p-4">
-      <form
-        onSubmit={handleSearch}
-        className="flex flex-col gap-3 bg-white shadow p-4 rounded-lg"
-      >
+      <form onSubmit={handleSearch} className="flex flex-col gap-3">
         <input
           type="text"
           placeholder="GitHub Username"
@@ -64,14 +62,15 @@ export default function Search() {
       </form>
 
       {loading && <p className="mt-4 text-gray-600">Loading...</p>}
-      {error && <p className="mt-4 text-red-500">{error}</p>}
+      {error && (
+        <p className="mt-4 text-red-500">
+          Looks like we cant find the user
+        </p>
+      )}
 
       <div className="mt-6 space-y-4">
         {users.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center gap-4 border-b pb-2"
-          >
+          <div key={user.id} className="flex items-center gap-4 border-b pb-2">
             <img
               src={user.avatar_url}
               alt={user.login}
@@ -86,7 +85,7 @@ export default function Search() {
               >
                 {user.login}
               </a>
-              {user.location && <p className="text-sm">{user.location}</p>}
+              {/* Note: location not always available in search results */}
             </div>
           </div>
         ))}
@@ -94,5 +93,6 @@ export default function Search() {
     </div>
   );
 }
+
 
 
