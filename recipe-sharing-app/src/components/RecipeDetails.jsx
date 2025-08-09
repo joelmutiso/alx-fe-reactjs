@@ -1,12 +1,17 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import useRecipeStore from './recipeStore';
-import { Link } from 'react-router-dom';
 import DeleteRecipeButton from './DeleteRecipeButton';
 
-const RecipeDetails = ({ recipeId }) => {
+const RecipeDetails = () => {
+  const { recipeId } = useParams();
   const recipe = useRecipeStore(state =>
-    state.recipes.find(recipe => recipe.id === recipeId)
+    state.recipes.find(recipe => String(recipe.id) === String(recipeId))
   );
+  const favorites = useRecipeStore(state => state.favorites);
+  const addFavorite = useRecipeStore(state => state.addFavorite);
+  const removeFavorite = useRecipeStore(state => state.removeFavorite);
+
+  const isFavorite = favorites.includes(recipeId);
 
   if (!recipe) {
     return <p>Recipe not found.</p>;
@@ -14,9 +19,16 @@ const RecipeDetails = ({ recipeId }) => {
 
   return (
     <div>
-      <h1>{recipe.title}</h1>
+      <h1>
+        <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
+      </h1>
       <p>{recipe.description}</p>
       <DeleteRecipeButton recipeId={recipeId} />
+      {isFavorite ? (
+        <button onClick={() => removeFavorite(recipeId)}>Remove from Favorites</button>
+      ) : (
+        <button onClick={() => addFavorite(recipeId)}>Add to Favorites</button>
+      )}
     </div>
   );
 };
