@@ -11,12 +11,13 @@ export const fetchUserData = async ({ username, location, minRepos }) => {
     if (location) query += `location:${location} `;
     if (minRepos) query += `repos:>=${minRepos} `;
 
-    const response = await axios.get(`${BASE_URL}/search/users`, {
-      params: { q: query.trim() },
+    const fullUrl = `${BASE_URL}=${encodeURIComponent(query.trim())}`;
+
+    const response = await axios.get(fullUrl, {
       headers: apiKey ? { Authorization: `token ${apiKey}` } : {},
     });
 
-    return response.data;
+    return response.data.items; // return only the users array
   } catch (error) {
     console.error("Error fetching advanced GitHub user search:", error);
     throw error;
