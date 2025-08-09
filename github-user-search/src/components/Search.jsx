@@ -1,113 +1,83 @@
 import { useState } from "react";
-import { fetchAdvancedUserSearch } from "../services/githubService";
+import { fetchUserData } from "../services/githubService";
 
 function Search() {
-  const [formData, setFormData] = useState({
-    username: "",
-    location: "",
-    minRepos: "",
-  });
-  const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState("");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!username.trim()) return;
+
     setLoading(true);
     setError("");
-    setUsers([]);
+    setUser(null);
 
     try {
-      const data = await fetchAdvancedUserSearch(formData);
-      setUsers(data.items || []);
-    } catch {
-      setError("Something went wrong. Please try again.");
+      const data = await fetchUserData(username);
+      setUser(data);
+    } catch (err) {
+      setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-6 font-sans max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">GitHub User Search</h1>
+    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
+      <h1>GitHub User Search</h1>
 
-      {/* Search Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-lg p-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
-      >
+      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
         <input
           type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          className="border p-2 rounded w-full"
+          placeholder="Enter GitHub username..."
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{
+            padding: "0.5rem",
+            width: "250px",
+            marginRight: "0.5rem",
+          }}
         />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          value={formData.location}
-          onChange={handleChange}
-          className="border p-2 rounded w-full"
-        />
-        <input
-          type="number"
-          name="minRepos"
-          placeholder="Min Repos"
-          value={formData.minRepos}
-          onChange={handleChange}
-          className="border p-2 rounded w-full"
-        />
-
-        <div className="md:col-span-3 flex justify-center">
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
-            Search
-          </button>
-        </div>
+        <button type="submit" style={{ padding: "0.5rem 1rem" }}>
+          Search
+        </button>
       </form>
 
-      {/* Loading / Error */}
-      {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {/* Results */}
-      <div className="grid gap-4">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center p-4 border rounded-lg shadow-sm"
+      {user && (
+        <div
+          style={{
+            border: "1px solid #ccc",
+            padding: "1rem",
+            borderRadius: "5px",
+            maxWidth: "300px",
+          }}
+        >
+          <img
+            src={user.avatar_url}
+            alt={user.login}
+            width="80"
+            style={{ borderRadius: "50%" }}
+          />
+          <h2>{user.name || user.login}</h2>
+          <a
+            href={user.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#0366d6" }}
           >
-            <img
-              src={user.avatar_url}
-              alt={user.login}
-              className="w-16 h-16 rounded-full mr-4"
-            />
-            <div>
-              <h2 className="text-lg font-semibold">{user.login}</h2>
-              {user.location && <p className="text-gray-500">{user.location}</p>}
-              <a
-                href={user.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                View Profile
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
+            View Profile
+          </a>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Search;
+
