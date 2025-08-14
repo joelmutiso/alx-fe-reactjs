@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Vegetable Stir-fry",
+    "summary": "A quick and healthy stir-fry with a colorful mix of seasonal vegetables and a savory sauce.",
+    "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=2080&auto=format&fit=crop"
+  },
+  {
+    "id": 2,
+    "title": "Classic Beef Burgers",
+    "summary": "Juicy beef patties with melted cheddar, fresh lettuce, and a toasted bun. A timeless classic.",
+    "image": "https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=2072&auto=format&fit=crop"
+  },
+  {
+    "id": 3,
+    "title": "Lemon Herb Roasted Chicken",
+    "summary": "Tender and flavorful roasted chicken with fresh lemon, garlic, and herbs. Perfect for a family dinner.",
+    "image": "https://pauliesaucerecipes.com/wp-content/uploads/2025/01/IMG_3398-735x551.jpg"
+  }
+]
