@@ -1,62 +1,44 @@
 import { useState } from 'react';
 
 const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  });
-
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Reset errors and message
     setErrors({});
     setMessage('');
 
-    // Manual validation for each field
     const newErrors = {};
-    if (!formData.username.trim()) {
+    if (!username.trim()) {
       newErrors.username = 'Username is required.';
     }
-    if (!formData.email.trim()) {
+    if (!email.trim()) {
       newErrors.email = 'Email is required.';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email address is invalid.';
     }
-    if (!formData.password.trim()) {
+    if (!password.trim()) {
       newErrors.password = 'Password is required.';
-    } else if (formData.password.length < 6) {
+    } else if (password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters.';
     }
 
-    // Check if there are any errors
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // Simulate successful submission
-    console.log('Form submitted:', formData);
+    console.log('Form submitted:', { username, email, password });
     setMessage('Registration successful!');
 
-    // Clear the form after submission
-    setFormData({
-      username: '',
-      email: '',
-      password: '',
-    });
+    setUsername('');
+    setEmail('');
+    setPassword('');
   };
 
   return (
@@ -69,8 +51,8 @@ const RegistrationForm = () => {
         <input
           type="text"
           name="username"
-          value={formData.username}
-          onChange={handleInputChange}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
@@ -81,8 +63,8 @@ const RegistrationForm = () => {
         <input
           type="email"
           name="email"
-          value={formData.email}
-          onChange={handleInputChange}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -93,8 +75,8 @@ const RegistrationForm = () => {
         <input
           type="password"
           name="password"
-          value={formData.password}
-          onChange={handleInputChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
