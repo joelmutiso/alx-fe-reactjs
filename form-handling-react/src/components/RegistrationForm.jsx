@@ -25,7 +25,7 @@ const RegistrationForm = () => {
     setErrors({});
     setMessage('');
 
-    // **1. Manual validation for each field**
+    // Manual validation for each field
     const newErrors = {};
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required.';
@@ -41,13 +41,13 @@ const RegistrationForm = () => {
       newErrors.password = 'Password must be at least 6 characters.';
     }
 
-    // **2. Check if there are any errors**
+    // Check if there are any errors
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // **3. Simulate successful submission**
+    // Simulate successful submission
     console.log('Form submitted:', formData);
     setMessage('Registration successful!');
 
