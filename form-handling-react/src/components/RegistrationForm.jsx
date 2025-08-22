@@ -4,27 +4,31 @@ const RegistrationForm = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    setError('');
+    setErrors({});
     setMessage('');
 
-    if (!username.trim()) {
-      setError('Username is required.');
-      return;
+    const newErrors = {};
+
+    if (!username) {
+      newErrors.username = 'Username is required.';
     }
 
-    if (!email.trim()) {
-      setError('Email is required.');
-      return;
+    if (!email) {
+      newErrors.email = 'Email is required.';
     }
 
-    if (!password.trim()) {
-      setError('Password is required.');
+    if (!password) {
+      newErrors.password = 'Password is required.';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
@@ -39,7 +43,6 @@ const RegistrationForm = () => {
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
       <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Register</h2>
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       {message && <p className="text-green-500 text-center mb-4">{message}</p>}
 
       <div className="mb-4">
@@ -50,6 +53,7 @@ const RegistrationForm = () => {
           onChange={(e) => setUsername(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username}</p>}
       </div>
 
       <div className="mb-4">
@@ -60,6 +64,7 @@ const RegistrationForm = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
       </div>
 
       <div className="mb-6">
@@ -70,6 +75,7 @@ const RegistrationForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
       </div>
 
       <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition-colors duration-300 font-bold">
