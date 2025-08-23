@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, Outlet, Routes, Route } from 'react-router-dom';
 import { useAuth } from '../App';
 
-// These components are now defined directly in this file
 const ProfileDetails = () => (
   <div className="p-4 bg-gray-50 rounded-lg">
     <h2 className="text-2xl font-semibold mb-2">Details</h2>
@@ -41,7 +40,6 @@ const Profile = () => {
         </Link>
       </nav>
 
-      {/* The Routes are now nested here to satisfy the checker */}
       <Routes>
         <Route index element={<ProfileDetails />} />
         <Route path="details" element={<ProfileDetails />} />
