@@ -207,7 +207,7 @@ const Navbar = () => {
               <Link to="/profile" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Profile
               </Link>
-              <Link to="/posts/1" className="text-gray-600 hover:text-gray-900 transition-colors">
+              <Link to="/blog/1" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Blog Post 1
               </Link>
             </div>
@@ -231,7 +231,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/posts/:postId" element={<BlogPost />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
             <Route 
               path="/profile" 
               element={
