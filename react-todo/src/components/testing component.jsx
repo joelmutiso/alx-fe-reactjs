@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Testing = () => {
+const testing component = () => {
   const [count, setCount] = useState(0);
 
   return (
@@ -15,4 +15,4 @@ const Testing = () => {
   );
 };
 
-export default temp1;
+export default testing component;
