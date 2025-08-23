@@ -15,4 +15,4 @@ const Testing = () => {
   );
 };
 
-export default Testing;
+export default temp1;
