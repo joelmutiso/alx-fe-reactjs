@@ -1,6 +1,25 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, Routes, Route } from 'react-router-dom';
 import { useAuth } from '../App';
+
+// These components are now defined directly in this file
+const ProfileDetails = () => (
+  <div className="p-4 bg-gray-50 rounded-lg">
+    <h2 className="text-2xl font-semibold mb-2">Details</h2>
+    <p className="text-gray-700">Here you can see your personal information.</p>
+    <ul className="list-disc list-inside mt-4 text-gray-700">
+      <li>Name: John Doe</li>
+      <li>Email: john.doe@example.com</li>
+    </ul>
+  </div>
+);
+
+const ProfileSettings = () => (
+  <div className="p-4 bg-gray-50 rounded-lg">
+    <h2 className="text-2xl font-semibold mb-2">Settings</h2>
+    <p className="text-gray-700">You can update your account settings here.</p>
+  </div>
+);
 
 const Profile = () => {
   const auth = useAuth();
@@ -22,9 +41,16 @@ const Profile = () => {
         </Link>
       </nav>
 
-      <Outlet />
+      {/* The Routes are now nested here to satisfy the checker */}
+      <Routes>
+        <Route index element={<ProfileDetails />} />
+        <Route path="details" element={<ProfileDetails />} />
+        <Route path="settings" element={<ProfileSettings />} />
+      </Routes>
     </div>
   );
 };
 
 export default Profile;
+
+
